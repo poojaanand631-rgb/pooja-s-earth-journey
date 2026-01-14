@@ -6,10 +6,14 @@ const HeroSection = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const scrollToExperience = () => {
+    document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section
       id="hero"
-      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
+      className="min-h-screen flex items-center relative overflow-hidden"
       style={{ background: "var(--gradient-hero)" }}
     >
       {/* Decorative organic shapes */}
@@ -34,82 +38,109 @@ const HeroSection = () => {
         />
       </div>
 
-      <div className="container-narrow mx-auto px-6 text-center relative z-10">
-        {/* Status Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border mb-8"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
-          </span>
-          <span className="text-sm font-medium text-foreground">Available to Work</span>
-        </motion.div>
+      <div className="container-wide mx-auto px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Left - Text Content */}
+          <div className="order-2 lg:order-1">
+            {/* Status Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border mb-6"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+              </span>
+              <span className="text-sm font-medium text-foreground">Available to Work</span>
+            </motion.div>
 
-        {/* Main Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-foreground tracking-tight mb-6"
-        >
-          POOJA ANAND
-        </motion.h1>
+            {/* Main Heading */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight mb-6"
+            >
+              POOJA ANAND
+            </motion.h1>
 
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-xl md:text-2xl font-heading font-medium text-primary mb-4"
-        >
-          Sustainability & Climate Change Professional
-        </motion.p>
+            {/* Tagline */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-xl md:text-2xl font-heading font-medium text-primary mb-4"
+            >
+              Sustainability & Climate Change Professional
+            </motion.p>
 
-        {/* Subtext */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto"
-        >
-          Thinking of ways to save the planet, one solution at a time
-        </motion.p>
+            {/* Subtext */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-lg text-muted-foreground mb-6 max-w-lg"
+            >
+              Thinking of ways to save the planet, one solution at a time
+            </motion.p>
 
-        {/* Current Status */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-        >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-sage/10 border border-sage/20">
-            <MapPin className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-foreground">Singapore</span>
+            {/* Current Status */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-8"
+            >
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-sage/10 border border-sage/20">
+                <MapPin className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">Singapore</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-sage/10 border border-sage/20">
+                <Briefcase className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">Environmental Management @ NUS</span>
+              </div>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
+            >
+              <a href="#contact" className="btn-primary">
+                Let's Connect
+              </a>
+              <button onClick={scrollToExperience} className="btn-outline">
+                View My Work
+              </button>
+            </motion.div>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-sage/10 border border-sage/20">
-            <Briefcase className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-foreground">Environmental Management @ NUS</span>
-          </div>
-        </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <a href="#contact" className="btn-primary">
-            Let's Connect
-          </a>
-          <a href="#case-studies" className="btn-outline">
-            View My Work
-          </a>
-        </motion.div>
+          {/* Right - Image Placeholder */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="order-1 lg:order-2"
+          >
+            <div className="aspect-[4/5] max-w-md mx-auto lg:max-w-none rounded-3xl overflow-hidden bg-gradient-to-br from-sage/20 to-sand relative">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="w-32 h-32 mx-auto rounded-full bg-sage/20 mb-4 flex items-center justify-center">
+                    <span className="text-5xl">👩🏽‍💼</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">[Hero Image Placeholder]</p>
+                </div>
+              </div>
+              {/* Decorative elements */}
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-terracotta/20 blur-xl" />
+              <div className="absolute -top-4 -left-4 w-20 h-20 rounded-full bg-sage/30 blur-xl" />
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Scroll Indicator */}

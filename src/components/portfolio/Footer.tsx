@@ -37,9 +37,6 @@ const Footer = () => {
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold">
               Let's Build a Sustainable Future Together
             </h2>
-            <p className="text-lg text-sand-light/70 max-w-xl mx-auto">
-              I'm currently seeking opportunities in sustainability across Singapore, ASEAN, and Dubai
-            </p>
 
             {/* Location badges */}
             <div className="flex flex-wrap justify-center gap-3">
@@ -58,11 +55,11 @@ const Footer = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
               <a
                 href="mailto:pooja.anand@example.com"
-                className="btn-secondary inline-flex items-center justify-center gap-2"
+                className="btn-primary inline-flex items-center justify-center gap-2"
               >
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sand-light opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-sand-light"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-foreground opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-foreground"></span>
                 </span>
                 Available to Work
               </a>
@@ -137,9 +134,6 @@ const Footer = () => {
               © 2025 Pooja Anand. Designed with
               <Heart className="w-3 h-3 text-terracotta inline" />
               and sustainability in mind.
-            </p>
-            <p className="text-xs text-sand-light/40">
-              Website built with minimal carbon footprint 🌿
             </p>
             <button
               onClick={scrollToTop}
