@@ -18,140 +18,77 @@ import {
 interface Skill {
   name: string;
   icon: React.ReactNode;
-  description: string;
-  size: "sm" | "md" | "lg";
+  size: "xl" | "lg" | "md" | "sm";
+  color: "sage" | "terracotta" | "olive" | "charcoal";
 }
 
 const skills: Skill[] = [
-  {
-    name: "Circular Economy",
-    icon: <Recycle className="w-6 h-6" />,
-    description: "Designing systems that eliminate waste and maximize resource value",
-    size: "lg",
-  },
-  {
-    name: "Waste Management",
-    icon: <Trash2 className="w-6 h-6" />,
-    description: "End-to-end waste solutions from collection to recycling",
-    size: "lg",
-  },
-  {
-    name: "Life Cycle Assessment",
-    icon: <RefreshCcw className="w-6 h-6" />,
-    description: "Evaluating environmental impacts across product lifecycles",
-    size: "md",
-  },
-  {
-    name: "Stakeholder Engagement",
-    icon: <Users className="w-6 h-6" />,
-    description: "Building partnerships with diverse communities and organizations",
-    size: "md",
-  },
-  {
-    name: "Project Management",
-    icon: <ClipboardCheck className="w-6 h-6" />,
-    description: "Leading cross-functional teams to deliver impact",
-    size: "md",
-  },
-  {
-    name: "Climate Action",
-    icon: <Globe className="w-6 h-6" />,
-    description: "Implementing solutions to combat climate change",
-    size: "lg",
-  },
-  {
-    name: "Social Impact",
-    icon: <Heart className="w-6 h-6" />,
-    description: "Creating positive change in communities",
-    size: "md",
-  },
-  {
-    name: "Sustainability Reporting",
-    icon: <FileBarChart className="w-6 h-6" />,
-    description: "ESG frameworks, GRI, and impact measurement",
-    size: "sm",
-  },
-  {
-    name: "Supply Chain Analysis",
-    icon: <Network className="w-6 h-6" />,
-    description: "Sustainable sourcing and logistics optimization",
-    size: "sm",
-  },
-  {
-    name: "Environmental Policy",
-    icon: <Leaf className="w-6 h-6" />,
-    description: "Understanding and shaping regulatory frameworks",
-    size: "sm",
-  },
-  {
-    name: "Impact Measurement",
-    icon: <TrendingUp className="w-6 h-6" />,
-    description: "Quantifying and communicating sustainability outcomes",
-    size: "sm",
-  },
-  {
-    name: "Innovation Strategy",
-    icon: <Lightbulb className="w-6 h-6" />,
-    description: "Developing novel solutions for environmental challenges",
-    size: "sm",
-  },
+  { name: "Circular Economy", icon: <Recycle className="w-5 h-5" />, size: "xl", color: "sage" },
+  { name: "Waste Management", icon: <Trash2 className="w-5 h-5" />, size: "xl", color: "terracotta" },
+  { name: "Climate Action", icon: <Globe className="w-5 h-5" />, size: "lg", color: "olive" },
+  { name: "Life Cycle Assessment", icon: <RefreshCcw className="w-4 h-4" />, size: "md", color: "sage" },
+  { name: "Stakeholder Engagement", icon: <Users className="w-4 h-4" />, size: "lg", color: "charcoal" },
+  { name: "Project Management", icon: <ClipboardCheck className="w-4 h-4" />, size: "md", color: "terracotta" },
+  { name: "Social Impact", icon: <Heart className="w-4 h-4" />, size: "lg", color: "sage" },
+  { name: "Sustainability Reporting", icon: <FileBarChart className="w-3 h-3" />, size: "sm", color: "olive" },
+  { name: "Supply Chain", icon: <Network className="w-3 h-3" />, size: "sm", color: "charcoal" },
+  { name: "Environmental Policy", icon: <Leaf className="w-4 h-4" />, size: "md", color: "sage" },
+  { name: "Impact Measurement", icon: <TrendingUp className="w-3 h-3" />, size: "sm", color: "terracotta" },
+  { name: "Innovation Strategy", icon: <Lightbulb className="w-3 h-3" />, size: "sm", color: "olive" },
 ];
 
-const SkillCard = ({ skill, index }: { skill: Skill; index: number }) => {
-  const [isHovered, setIsHovered] = useState(false);
+const sizeClasses = {
+  xl: "text-3xl md:text-4xl lg:text-5xl font-bold",
+  lg: "text-2xl md:text-3xl font-semibold",
+  md: "text-lg md:text-xl font-medium",
+  sm: "text-base md:text-lg font-normal",
+};
 
-  const sizeClasses = {
-    sm: "col-span-1",
-    md: "col-span-1 md:col-span-2",
-    lg: "col-span-1 md:col-span-2 lg:col-span-3",
-  };
+const colorClasses = {
+  sage: "text-primary hover:text-sage-dark",
+  terracotta: "text-secondary hover:text-secondary/80",
+  olive: "text-olive hover:text-olive/80",
+  charcoal: "text-charcoal hover:text-charcoal/80",
+};
+
+const SkillWord = ({ skill, index }: { skill: Skill; index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.8 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
+      viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`${sizeClasses[skill.size]} relative`}
+      className="inline-flex items-center gap-2 cursor-pointer select-none"
     >
-      <motion.div
-        whileHover={{ y: -4, scale: 1.02 }}
-        className="h-full p-6 rounded-2xl bg-card border border-border cursor-pointer overflow-hidden relative group"
+      <motion.span
+        animate={{
+          scale: isHovered ? 1.1 : 1,
+          y: isHovered ? -4 : 0,
+        }}
+        transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
+        className={`font-heading ${sizeClasses[skill.size]} ${colorClasses[skill.color]} transition-colors duration-300 whitespace-nowrap`}
       >
-        <div className="flex items-start gap-4">
-          <motion.div
-            animate={{ 
-              rotate: isHovered ? [0, -10, 10, -5, 5, 0] : 0,
-              scale: isHovered ? 1.1 : 1 
-            }}
-            transition={{ duration: 0.5 }}
-            className="w-12 h-12 rounded-xl bg-sage/10 border border-sage/20 flex items-center justify-center text-primary shrink-0"
-          >
-            {skill.icon}
-          </motion.div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
-              {skill.name}
-            </h3>
-            <motion.p
-              initial={{ opacity: 0.7 }}
-              animate={{ opacity: isHovered ? 1 : 0.7 }}
-              className="text-sm text-muted-foreground leading-relaxed"
-            >
-              {skill.description}
-            </motion.p>
-          </div>
-        </div>
-
-        {/* Hover gradient effect */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          className="absolute inset-0 bg-gradient-to-br from-sage/5 to-transparent pointer-events-none"
-        />
-      </motion.div>
+        {skill.name}
+      </motion.span>
+      
+      {/* Icon appears on hover */}
+      <motion.span
+        initial={{ opacity: 0, scale: 0, x: -10 }}
+        animate={{
+          opacity: isHovered ? 1 : 0,
+          scale: isHovered ? 1 : 0,
+          x: isHovered ? 0 : -10,
+          rotate: isHovered ? [0, -15, 15, -10, 10, 0] : 0,
+        }}
+        transition={{ duration: 0.4 }}
+        className={`${colorClasses[skill.color]}`}
+      >
+        {skill.icon}
+      </motion.span>
     </motion.div>
   );
 };
@@ -160,6 +97,22 @@ const SkillsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
+  // Create a scattered layout pattern
+  const positions = [
+    "justify-center", // Circular Economy
+    "justify-end pr-12", // Waste Management  
+    "justify-start pl-8", // Climate Action
+    "justify-center", // Life Cycle Assessment
+    "justify-end pr-20", // Stakeholder Engagement
+    "justify-start pl-16", // Project Management
+    "justify-center", // Social Impact
+    "justify-end pr-4", // Sustainability Reporting
+    "justify-start pl-24", // Supply Chain
+    "justify-center", // Environmental Policy
+    "justify-end pr-16", // Impact Measurement
+    "justify-start pl-4", // Innovation Strategy
+  ];
+
   return (
     <section id="skills" className="section-padding bg-sand-light" ref={ref}>
       <div className="container-wide mx-auto">
@@ -167,20 +120,20 @@ const SkillsSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
           <span className="text-sm font-medium text-primary uppercase tracking-wider">Expertise</span>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
             Along the Way, I've Picked Up...
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            A diverse skill set shaped by hands-on experience across NGOs, social enterprises, and climate tech startups
-          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {/* Word Cloud Layout */}
+        <div className="flex flex-col gap-4 md:gap-6 items-center max-w-4xl mx-auto">
           {skills.map((skill, index) => (
-            <SkillCard key={skill.name} skill={skill} index={index} />
+            <div key={skill.name} className={`w-full flex ${positions[index]}`}>
+              <SkillWord skill={skill} index={index} />
+            </div>
           ))}
         </div>
       </div>

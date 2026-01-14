@@ -23,30 +23,53 @@ const AboutSection = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Image Column */}
+          {/* Left - Image Collage */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-muted relative">
-              {/* Placeholder for headshot */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-sage/20 to-sand">
-                <div className="text-center p-8">
-                  <div className="w-32 h-32 mx-auto rounded-full bg-sage/20 mb-4 flex items-center justify-center">
-                    <span className="text-4xl">👩🏽‍💼</span>
+            <div className="grid grid-cols-2 gap-4">
+              {/* Main large image */}
+              <div className="col-span-2 aspect-[16/10] rounded-2xl overflow-hidden bg-gradient-to-br from-sage/20 to-sand relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-sage/20 mb-2 flex items-center justify-center">
+                      <span className="text-2xl">📸</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">[Image 1]</p>
                   </div>
-                  <p className="text-sm text-muted-foreground">[Professional Headshot]</p>
+                </div>
+              </div>
+              {/* Two smaller images */}
+              <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-terracotta/20 to-sand relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <div className="w-12 h-12 mx-auto rounded-full bg-terracotta/20 mb-2 flex items-center justify-center">
+                      <span className="text-xl">🌱</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">[Image 2]</p>
+                  </div>
+                </div>
+              </div>
+              <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-olive/20 to-sand relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <div className="w-12 h-12 mx-auto rounded-full bg-olive/20 mb-2 flex items-center justify-center">
+                      <span className="text-xl">🌍</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">[Image 3]</p>
+                  </div>
                 </div>
               </div>
             </div>
-            {/* Decorative element */}
+            {/* Decorative elements */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-terracotta/10 blur-2xl" />
             <div className="absolute -top-4 -left-4 w-24 h-24 rounded-full bg-sage/20 blur-xl" />
           </motion.div>
 
-          {/* Content Column */}
+          {/* Right - Content */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
