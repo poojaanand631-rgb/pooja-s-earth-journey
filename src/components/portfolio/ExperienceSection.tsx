@@ -137,7 +137,7 @@ const ExperienceSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="experience" className="section-padding bg-sand-light" ref={ref}>
+    <section id="experience" className="h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 bg-sand-light overflow-hidden" ref={ref}>
       <div className="container-narrow mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -125,6 +125,11 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+
+  section, footer {
+    scroll-snap-align: start;
   }
 
   body {

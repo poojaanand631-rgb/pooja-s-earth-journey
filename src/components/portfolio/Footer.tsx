@@ -23,7 +23,7 @@ const Footer = () => {
   };
 
   return (
-    <footer id="contact" className="bg-charcoal text-sand-light">
+    <footer id="contact" className="min-h-screen flex flex-col bg-charcoal text-sand-light">
       {/* Main CTA Section */}
       <div className="section-padding pb-12">
         <div className="container-narrow mx-auto text-center">

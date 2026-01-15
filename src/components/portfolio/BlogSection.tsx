@@ -103,7 +103,7 @@ const BlogSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="blog" className="section-padding bg-background" ref={ref}>
+    <section id="blog" className="h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 bg-background overflow-hidden" ref={ref}>
       <div className="container-wide mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

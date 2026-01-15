@@ -121,7 +121,7 @@ const EducationSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="education" className="section-padding bg-background" ref={ref}>
+    <section id="education" className="h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 bg-background overflow-hidden" ref={ref}>
       <div className="container-narrow mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

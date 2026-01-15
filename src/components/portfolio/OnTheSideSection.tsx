@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { X, Heart, Mic, Globe, Sparkles, Camera, Users, Coffee } from "lucide-react";
+import { X, Heart, Mic, Globe, Sparkles, Camera, Users } from "lucide-react";
 
 interface SideProject {
   id: string;
@@ -69,16 +69,12 @@ const colorVariants = {
   sand: "from-sand to-sand-light",
 };
 
-const ProjectCard = ({ project, onClick, index }: { project: SideProject; onClick: () => void; index: number }) => {
+const CarouselCard = ({ project, onClick }: { project: SideProject; onClick: () => void }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
       whileHover={{ scale: 1.03 }}
       onClick={onClick}
-      className="cursor-pointer group"
+      className="cursor-pointer group flex-shrink-0 w-[280px] md:w-[320px]"
     >
       <div className={`aspect-square rounded-3xl bg-gradient-to-br ${colorVariants[project.color]} overflow-hidden relative`}>
         {/* Placeholder content */}
@@ -156,34 +152,61 @@ const OnTheSideSection = () => {
   const [selectedProject, setSelectedProject] = useState<SideProject | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [scrollX, setScrollX] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Duplicate projects for infinite scroll effect
+  const duplicatedProjects = [...sideProjects, ...sideProjects];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScrollX((prev) => {
+        const cardWidth = 320 + 24; // card width + gap
+        const totalWidth = cardWidth * sideProjects.length;
+        const newValue = prev + 1;
+        // Reset when we've scrolled past the first set
+        if (newValue >= totalWidth) {
+          return 0;
+        }
+        return newValue;
+      });
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section id="on-the-side" className="section-padding bg-sand-light" ref={ref}>
-      <div className="container-wide mx-auto">
+    <section id="on-the-side" className="h-screen flex flex-col justify-center bg-sand-light overflow-hidden" ref={ref}>
+      <div className="w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12 px-6"
         >
           <span className="text-sm font-medium text-primary uppercase tracking-wider">Beyond Work</span>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
+          <h2 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mt-2">
             On the Side
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-sm md:text-base">
             A glimpse into what drives me beyond the 9-to-5
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {sideProjects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              index={index}
-              onClick={() => setSelectedProject(project)}
-            />
-          ))}
+        {/* Auto-scrolling Carousel */}
+        <div className="relative overflow-hidden" ref={containerRef}>
+          <motion.div
+            className="flex gap-6"
+            style={{ x: -scrollX }}
+          >
+            {duplicatedProjects.map((project, index) => (
+              <CarouselCard
+                key={`${project.id}-${index}`}
+                project={project}
+                onClick={() => setSelectedProject(project)}
+              />
+            ))}
+          </motion.div>
         </div>
       </div>
 
