@@ -18,38 +18,119 @@ import {
 interface Skill {
   name: string;
   icon: React.ReactNode;
-  size: "xl" | "lg" | "md" | "sm";
-  color: "sage" | "terracotta" | "olive" | "charcoal";
+  fontSize: string;
+  color: string;
+  position: { x: number; y: number };
 }
 
+// Positioned like a real word cloud - tightly packed with varying sizes
 const skills: Skill[] = [
-  { name: "Circular Economy", icon: <Recycle className="w-8 h-8" />, size: "xl", color: "sage" },
-  { name: "Waste Management", icon: <Trash2 className="w-8 h-8" />, size: "xl", color: "terracotta" },
-  { name: "Climate Action", icon: <Globe className="w-7 h-7" />, size: "lg", color: "olive" },
-  { name: "Life Cycle Assessment", icon: <RefreshCcw className="w-6 h-6" />, size: "md", color: "sage" },
-  { name: "Stakeholder Engagement", icon: <Users className="w-7 h-7" />, size: "lg", color: "charcoal" },
-  { name: "Project Management", icon: <ClipboardCheck className="w-6 h-6" />, size: "md", color: "terracotta" },
-  { name: "Social Impact", icon: <Heart className="w-7 h-7" />, size: "lg", color: "sage" },
-  { name: "Sustainability Reporting", icon: <FileBarChart className="w-5 h-5" />, size: "sm", color: "olive" },
-  { name: "Supply Chain", icon: <Network className="w-5 h-5" />, size: "sm", color: "charcoal" },
-  { name: "Environmental Policy", icon: <Leaf className="w-6 h-6" />, size: "md", color: "sage" },
-  { name: "Impact Measurement", icon: <TrendingUp className="w-5 h-5" />, size: "sm", color: "terracotta" },
-  { name: "Innovation Strategy", icon: <Lightbulb className="w-5 h-5" />, size: "sm", color: "olive" },
+  { 
+    name: "Data", 
+    icon: <Recycle className="w-10 h-10" />, 
+    fontSize: "text-5xl md:text-6xl lg:text-7xl font-bold",
+    color: "text-primary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Insights", 
+    icon: <Globe className="w-9 h-9" />, 
+    fontSize: "text-4xl md:text-5xl lg:text-6xl font-bold",
+    color: "text-charcoal",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Circular Economy", 
+    icon: <Recycle className="w-8 h-8" />, 
+    fontSize: "text-3xl md:text-4xl lg:text-5xl font-semibold",
+    color: "text-secondary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Waste", 
+    icon: <Trash2 className="w-7 h-7" />, 
+    fontSize: "text-2xl md:text-3xl lg:text-4xl font-semibold",
+    color: "text-olive",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Climate", 
+    icon: <Globe className="w-6 h-6" />, 
+    fontSize: "text-xl md:text-2xl lg:text-3xl font-medium",
+    color: "text-primary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Impact", 
+    icon: <TrendingUp className="w-7 h-7" />, 
+    fontSize: "text-2xl md:text-3xl lg:text-4xl font-semibold",
+    color: "text-secondary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Stakeholder", 
+    icon: <Users className="w-5 h-5" />, 
+    fontSize: "text-lg md:text-xl lg:text-2xl font-medium",
+    color: "text-charcoal",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Policy", 
+    icon: <Leaf className="w-6 h-6" />, 
+    fontSize: "text-xl md:text-2xl lg:text-3xl font-medium",
+    color: "text-olive",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Social", 
+    icon: <Heart className="w-5 h-5" />, 
+    fontSize: "text-lg md:text-xl lg:text-2xl font-medium",
+    color: "text-primary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Project", 
+    icon: <ClipboardCheck className="w-4 h-4" />, 
+    fontSize: "text-base md:text-lg lg:text-xl",
+    color: "text-secondary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Reporting", 
+    icon: <FileBarChart className="w-4 h-4" />, 
+    fontSize: "text-base md:text-lg lg:text-xl",
+    color: "text-charcoal",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Supply Chain", 
+    icon: <Network className="w-4 h-4" />, 
+    fontSize: "text-sm md:text-base lg:text-lg",
+    color: "text-olive",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Innovation", 
+    icon: <Lightbulb className="w-5 h-5" />, 
+    fontSize: "text-lg md:text-xl lg:text-2xl font-medium",
+    color: "text-primary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "LCA", 
+    icon: <RefreshCcw className="w-4 h-4" />, 
+    fontSize: "text-base md:text-lg lg:text-xl",
+    color: "text-secondary",
+    position: { x: 0, y: 0 }
+  },
+  { 
+    name: "Management", 
+    icon: <ClipboardCheck className="w-5 h-5" />, 
+    fontSize: "text-lg md:text-xl lg:text-2xl font-medium",
+    color: "text-charcoal",
+    position: { x: 0, y: 0 }
+  },
 ];
-
-const sizeClasses = {
-  xl: "text-2xl md:text-3xl lg:text-4xl font-bold",
-  lg: "text-xl md:text-2xl lg:text-3xl font-semibold",
-  md: "text-base md:text-lg lg:text-xl font-medium",
-  sm: "text-sm md:text-base lg:text-lg font-normal",
-};
-
-const colorClasses = {
-  sage: "text-primary",
-  terracotta: "text-secondary",
-  olive: "text-olive",
-  charcoal: "text-charcoal",
-};
 
 const SkillWord = ({ skill, index, isAnyHovered, onHover, onLeave }: { 
   skill: Skill; 
@@ -71,29 +152,29 @@ const SkillWord = ({ skill, index, isAnyHovered, onHover, onLeave }: {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.4, delay: index * 0.03 }}
+    <motion.span
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.3, delay: index * 0.02 }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative cursor-pointer select-none"
+      className="relative cursor-pointer select-none inline-block"
     >
       {/* Icon above word on hover */}
       <motion.div
-        initial={{ opacity: 0, scale: 0, y: 10 }}
+        initial={{ opacity: 0, scale: 0, y: 5 }}
         animate={{
           opacity: isHovered ? 1 : 0,
           scale: isHovered ? 1 : 0,
-          y: isHovered ? 0 : 10,
+          y: isHovered ? -8 : 5,
         }}
-        transition={{ duration: 0.3 }}
-        className={`absolute -top-10 md:-top-12 left-1/2 -translate-x-1/2 ${colorClasses[skill.color]}`}
+        transition={{ duration: 0.2 }}
+        className={`absolute -top-8 md:-top-10 left-1/2 -translate-x-1/2 ${skill.color} z-20`}
       >
         <motion.div
-          animate={{ rotate: isHovered ? [0, -10, 10, -5, 5, 0] : 0 }}
-          transition={{ duration: 0.5 }}
+          animate={{ rotate: isHovered ? [0, -10, 10, 0] : 0 }}
+          transition={{ duration: 0.4 }}
         >
           {skill.icon}
         </motion.div>
@@ -101,17 +182,16 @@ const SkillWord = ({ skill, index, isAnyHovered, onHover, onLeave }: {
       
       <motion.span
         animate={{
-          scale: isHovered ? 1.15 : 1,
-          y: isHovered ? -4 : 0,
-          filter: isAnyHovered && !isHovered ? "blur(2px)" : "blur(0px)",
-          opacity: isAnyHovered && !isHovered ? 0.4 : 1,
+          scale: isHovered ? 1.1 : 1,
+          filter: isAnyHovered && !isHovered ? "blur(3px)" : "blur(0px)",
+          opacity: isAnyHovered && !isHovered ? 0.3 : 1,
         }}
-        transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
-        className={`font-heading ${sizeClasses[skill.size]} ${colorClasses[skill.color]} transition-colors duration-300 whitespace-nowrap inline-block`}
+        transition={{ duration: 0.2 }}
+        className={`font-heading ${skill.fontSize} ${skill.color} transition-colors duration-200 leading-none`}
       >
         {skill.name}
       </motion.span>
-    </motion.div>
+    </motion.span>
   );
 };
 
@@ -127,7 +207,7 @@ const SkillsSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-12"
+          className="text-center mb-6 md:mb-8"
         >
           <span className="text-sm font-medium text-primary uppercase tracking-wider">Expertise</span>
           <h2 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mt-2">
@@ -135,8 +215,8 @@ const SkillsSection = () => {
           </h2>
         </motion.div>
 
-        {/* Word Cloud Layout - clustered together */}
-        <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 md:gap-y-8 lg:gap-y-10 max-w-4xl mx-auto pt-8">
+        {/* Word Cloud - tightly packed like the reference */}
+        <div className="flex flex-wrap justify-center items-baseline gap-x-2 md:gap-x-3 gap-y-1 md:gap-y-2 max-w-4xl mx-auto leading-tight pt-4">
           {skills.map((skill, index) => (
             <SkillWord 
               key={skill.name} 
