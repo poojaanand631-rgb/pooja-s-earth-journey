@@ -13,7 +13,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center relative overflow-hidden"
+      className="h-screen flex items-center relative overflow-hidden"
       style={{ background: "var(--gradient-hero)" }}
     >
       {/* Decorative organic shapes */}
