@@ -52,15 +52,15 @@ const caseStudies: CaseStudy[] = [
 
 const CaseStudyCard = ({ study, onClick }: { study: CaseStudy; onClick: () => void }) => {
   const colorClasses = {
-    sage: "from-sage/20 to-sage/5 group-hover:from-sage/30",
-    terracotta: "from-terracotta/20 to-terracotta/5 group-hover:from-terracotta/30",
-    olive: "from-olive/20 to-olive/5 group-hover:from-olive/30",
+    sage: "from-sage/25 to-sage/10",
+    terracotta: "from-terracotta/25 to-terracotta/10",
+    olive: "from-olive/25 to-olive/10",
   };
 
   return (
     <motion.div
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className="group cursor-pointer"
       onClick={onClick}
     >
@@ -69,31 +69,27 @@ const CaseStudyCard = ({ study, onClick }: { study: CaseStudy; onClick: () => vo
         <div className={`aspect-[4/3] bg-gradient-to-br ${colorClasses[study.color]} relative overflow-hidden`}>
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center p-6">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-background/80 backdrop-blur mb-3 flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto rounded-lg bg-background/80 backdrop-blur mb-3 flex items-center justify-center">
                 <span className="text-2xl">📊</span>
               </div>
-              <p className="text-sm text-muted-foreground">[Project Image]</p>
+              <p className="text-xs text-muted-foreground">[Project Image]</p>
             </div>
           </div>
           
-          {/* Hover overlay */}
-          <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span className="px-4 py-2 rounded-full bg-background text-foreground text-sm font-medium flex items-center gap-2">
-              View Case Study
-              <ArrowUpRight className="w-4 h-4" />
-            </span>
-          </div>
+          {/* Hover overlay - subtle accent underline */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-x-100 scale-x-0 origin-left" />
         </div>
 
         {/* Content */}
         <div className="p-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-sage/10 text-primary mb-3">
+          <span className="inline-block px-3 py-1 rounded-sm text-xs font-medium bg-sage/10 text-primary mb-4 uppercase tracking-wider">
             {study.category}
           </span>
-          <h3 className="font-heading text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+          <h3 className="font-heading text-xl md:text-2xl font-normal text-foreground mb-3 group-hover:text-primary transition-colors duration-300 leading-tight relative">
             {study.title}
+            <ArrowUpRight className="w-4 h-4 inline-block ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </h3>
-          <p className="text-muted-foreground text-sm line-clamp-2">
+          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
             {study.tagline}
           </p>
         </div>
@@ -133,47 +129,47 @@ const CaseStudyModal = ({ study, onClose }: { study: CaseStudy; onClose: () => v
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-8 md:p-12 space-y-8">
           {/* Image placeholder */}
-          <div className="aspect-video rounded-2xl bg-gradient-to-br from-sage/20 to-sand flex items-center justify-center">
+          <div className="aspect-video rounded-lg bg-gradient-to-br from-sage/20 to-sand flex items-center justify-center">
             <div className="text-center">
-              <div className="w-20 h-20 mx-auto rounded-2xl bg-background/80 mb-3 flex items-center justify-center">
+              <div className="w-20 h-20 mx-auto rounded-lg bg-background/80 mb-3 flex items-center justify-center">
                 <span className="text-3xl">📊</span>
               </div>
               <p className="text-sm text-muted-foreground">[Project Images / Visuals]</p>
             </div>
           </div>
 
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+          <h2 className="font-heading text-3xl md:text-4xl font-normal text-foreground leading-tight mb-4">
             {study.title}
           </h2>
-          <p className="text-muted-foreground">{study.tagline}</p>
+          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">{study.tagline}</p>
 
           {/* Challenge */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center gap-2 text-secondary">
               <Target className="w-5 h-5" />
-              <h3 className="font-heading font-semibold">The Challenge</h3>
+              <h3 className="font-heading text-xl font-normal">The Challenge</h3>
             </div>
-            <p className="text-muted-foreground pl-7">{study.challenge}</p>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed pl-7">{study.challenge}</p>
           </div>
 
           {/* Solution */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center gap-2 text-primary">
               <Lightbulb className="w-5 h-5" />
-              <h3 className="font-heading font-semibold">The Solution</h3>
+              <h3 className="font-heading text-xl font-normal">The Solution</h3>
             </div>
-            <p className="text-muted-foreground pl-7">{study.solution}</p>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed pl-7">{study.solution}</p>
           </div>
 
           {/* Impact */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center gap-2 text-olive">
               <BarChart3 className="w-5 h-5" />
-              <h3 className="font-heading font-semibold">The Impact</h3>
+              <h3 className="font-heading text-xl font-normal">The Impact</h3>
             </div>
-            <p className="text-muted-foreground pl-7">{study.impact}</p>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed pl-7">{study.impact}</p>
           </div>
 
           {/* Skills */}
@@ -205,30 +201,27 @@ const CaseStudiesSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="case-studies" className="h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 bg-background overflow-hidden" ref={ref}>
-      <div className="container-wide mx-auto">
+    <section id="case-studies" className="section-seamless section-bg-case-studies min-h-screen flex flex-col justify-center px-6 md:px-12 lg:pr-24 py-16" ref={ref}>
+      <div className="container-wide mx-auto lg:ml-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-12"
         >
-          <span className="text-sm font-medium text-primary uppercase tracking-wider">Portfolio</span>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-2">
-            Case Studies
+          <span className="text-xs font-medium text-primary uppercase tracking-widest mb-4 block">My work</span>
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-normal text-foreground leading-tight">
+            Case studies
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl">
-            A selection of projects showcasing impact-driven work in sustainability and climate action
-          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {caseStudies.map((study, index) => (
             <motion.div
               key={study.id}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
             >
               <CaseStudyCard study={study} onClick={() => setSelectedStudy(study)} />
             </motion.div>

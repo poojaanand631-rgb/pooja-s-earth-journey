@@ -72,25 +72,26 @@ const colorVariants = {
 const CarouselCard = ({ project, onClick }: { project: SideProject; onClick: () => void }) => {
   return (
     <motion.div
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       onClick={onClick}
       className="cursor-pointer group flex-shrink-0 w-[280px] md:w-[320px]"
     >
-      <div className={`aspect-square rounded-3xl bg-gradient-to-br ${colorVariants[project.color]} overflow-hidden relative`}>
+      <div className={`aspect-square rounded-lg bg-gradient-to-br ${colorVariants[project.color]} overflow-hidden relative`}>
         {/* Placeholder content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-background/80 backdrop-blur flex items-center justify-center mb-4 text-foreground">
+          <div className="w-14 h-14 rounded-lg bg-background/80 backdrop-blur flex items-center justify-center mb-4 text-foreground">
             {project.icon}
           </div>
-          <p className="text-sm text-muted-foreground">[Image Placeholder]</p>
+          <p className="text-xs text-muted-foreground">[Image Placeholder]</p>
         </div>
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-foreground/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
-          <span className="text-xs font-medium text-background/70 uppercase tracking-wider mb-2">
+        <div className="absolute inset-0 bg-foreground/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
+          <span className="text-xs font-medium text-background/70 uppercase tracking-widest mb-3">
             {project.category}
           </span>
-          <h3 className="font-heading text-lg font-semibold text-background">
+          <h3 className="font-heading text-xl font-normal text-background leading-tight">
             {project.title}
           </h3>
         </div>
@@ -153,61 +154,113 @@ const OnTheSideSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [scrollX, setScrollX] = useState(0);
+  const scrollXRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [blurredIndices, setBlurredIndices] = useState<Set<number>>(new Set());
 
   // Duplicate projects for infinite scroll effect
   const duplicatedProjects = [...sideProjects, ...sideProjects];
 
+  // Sync ref with state
   useEffect(() => {
+    scrollXRef.current = scrollX;
+  }, [scrollX]);
+
+  useEffect(() => {
+    const cardWidth = 320 + 24; // card width + gap
+
+    const updateBlur = () => {
+      const currentScrollX = scrollXRef.current;
+      const blurred = new Set<number>();
+      const viewportRight = window.innerWidth;
+      
+      duplicatedProjects.forEach((_, index) => {
+        const cardLeft = -currentScrollX + index * cardWidth;
+        const cardRight = cardLeft + 320;
+        
+        // Blur if card is at or beyond viewport edges (leftmost or rightmost visible)
+        const isLeftmost = cardLeft < 0 && cardRight > 0;
+        const isRightmost = cardLeft < viewportRight && cardRight > viewportRight;
+        
+        if (isLeftmost || isRightmost) {
+          blurred.add(index);
+        }
+      });
+      
+      setBlurredIndices(blurred);
+    };
+
+    // Update blur immediately on mount
+    updateBlur();
+
+    // Update blur on resize
+    const handleResize = () => {
+      updateBlur();
+    };
+    window.addEventListener('resize', handleResize);
+
     const interval = setInterval(() => {
       setScrollX((prev) => {
-        const cardWidth = 320 + 24; // card width + gap
         const totalWidth = cardWidth * sideProjects.length;
         const newValue = prev + 1;
-        // Reset when we've scrolled past the first set
-        if (newValue >= totalWidth) {
-          return 0;
-        }
-        return newValue;
+        const nextValue = newValue >= totalWidth ? 0 : newValue;
+        scrollXRef.current = nextValue;
+        updateBlur();
+        return nextValue;
       });
     }, 30);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
-    <section id="on-the-side" className="h-screen flex flex-col justify-center bg-sand-light overflow-hidden" ref={ref}>
-      <div className="w-full">
+    <section id="on-the-side" className="section-seamless section-bg-on-the-side min-h-screen flex flex-col justify-center py-16" ref={ref}>
+      {/* Header with padding */}
+      <div className="px-6 md:px-12 lg:pr-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-12 px-6"
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center mb-16"
         >
-          <span className="text-sm font-medium text-primary uppercase tracking-wider">Beyond Work</span>
-          <h2 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mt-2">
+          <span className="text-xs font-medium text-primary uppercase tracking-widest mb-4 block">Beyond Work</span>
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-normal text-foreground leading-tight mb-6">
             On the Side
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-sm md:text-base">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             A glimpse into what drives me beyond the 9-to-5
           </p>
         </motion.div>
+      </div>
 
-        {/* Auto-scrolling Carousel */}
-        <div className="relative overflow-hidden" ref={containerRef}>
-          <motion.div
-            className="flex gap-6"
-            style={{ x: -scrollX }}
-          >
-            {duplicatedProjects.map((project, index) => (
-              <CarouselCard
+      {/* Full-width Carousel - extends to edges */}
+      <div className="relative w-full overflow-hidden" ref={containerRef}>
+        <motion.div
+          className="flex gap-6"
+          style={{ x: -scrollX }}
+        >
+          {duplicatedProjects.map((project, index) => {
+            const isBlurred = blurredIndices.has(index);
+            return (
+              <div
                 key={`${project.id}-${index}`}
-                project={project}
-                onClick={() => setSelectedProject(project)}
-              />
-            ))}
-          </motion.div>
-        </div>
+                className="flex-shrink-0 transition-all duration-300"
+                style={{
+                  filter: isBlurred ? 'blur(3px)' : 'none',
+                  opacity: isBlurred ? 0.5 : 1,
+                }}
+              >
+                <CarouselCard
+                  project={project}
+                  onClick={() => setSelectedProject(project)}
+                />
+              </div>
+            );
+          })}
+        </motion.div>
       </div>
 
       <AnimatePresence>
