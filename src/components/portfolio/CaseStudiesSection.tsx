@@ -201,7 +201,7 @@ const CaseStudiesSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="case-studies" className="section-seamless section-bg-case-studies min-h-screen flex flex-col justify-center px-6 md:px-12 lg:pr-24 py-16" ref={ref}>
+    <section id="case-studies" className="section-seamless section-bg-case-studies min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 py-16" ref={ref}>
       <div className="container-wide mx-auto lg:ml-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

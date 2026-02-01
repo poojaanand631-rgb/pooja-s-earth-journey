@@ -1,17 +1,43 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, MapPin, Briefcase } from "lucide-react";
+import { useRef } from "react";
 
 const HeroSection = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+
+  // Transform values based on scroll
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.7, 0]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.85]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const blobScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.1, 1.2]);
+  const blobOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0]);
+
   const scrollToAbout = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <section
+      ref={ref}
       id="hero"
-      className="h-screen flex items-center relative overflow-hidden"
-      style={{ background: "var(--gradient-hero)" }}
+      className="min-h-screen flex items-center relative overflow-hidden pt-24 md:pt-32"
+      style={{ 
+        background: "var(--gradient-hero)",
+        paddingBottom: "0"
+      }}
     >
+      {/* Overlapping gradient layer for smooth transition */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style={{
+          height: "30vh",
+          background: "linear-gradient(to bottom, transparent 0%, hsl(100 20% 92% / 0.5) 50%, hsl(100 20% 92%) 100%)",
+        }}
+      />
       {/* Decorative organic shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -57,7 +83,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="font-heading text-6xl md:text-7xl lg:text-8xl font-normal text-foreground tracking-tight mb-8 leading-[1.1]"
+              className="font-heading text-5xl md:text-6xl lg:text-7xl font-normal text-foreground tracking-tight mb-6 leading-[1.1]"
             >
               POOJA ANAND
             </motion.h1>
@@ -67,7 +93,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-              className="text-2xl md:text-3xl font-heading font-normal text-primary mb-6 leading-relaxed"
+              className="text-xl md:text-2xl font-heading font-normal text-primary mb-5 leading-relaxed"
             >
               Sustainability & Climate Change Professional
             </motion.p>
@@ -77,7 +103,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl leading-relaxed"
+              className="text-base md:text-lg text-muted-foreground mb-8 max-w-xl leading-relaxed"
             >
               Thinking of ways to save the planet, one solution at a time
             </motion.p>
@@ -87,7 +113,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-12"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-10"
             >
               <div className="flex items-center gap-2 px-4 py-2 rounded-sm bg-sage/10 border border-sage/20">
                 <MapPin className="w-4 h-4 text-primary" />
@@ -120,11 +146,58 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="order-1 lg:order-2"
+            className="order-1 lg:order-2 relative"
           >
-            <div 
-              className="aspect-[4/5] max-w-md mx-auto lg:max-w-none rounded-lg overflow-hidden relative"
-              style={{ background: "linear-gradient(135deg, rgba(137, 160, 126, 0) 0%, rgba(238, 232, 221, 0) 100%)" }}
+            {/* Organic Blob Background */}
+            <motion.div 
+              className="absolute inset-0 flex items-center justify-center"
+              style={{
+                opacity: blobOpacity,
+                scale: blobScale,
+              }}
+            >
+              <motion.svg
+                initial={{ scale: 0.8, opacity: 0, rotate: 315 }}
+                animate={{ scale: 1, opacity: 1, rotate: 315 }}
+                transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                viewBox="0 0 500 500"
+                className="w-full h-full"
+                style={{ 
+                  filter: "drop-shadow(0 8px 30px rgba(210, 150, 120, 0.2))"
+                }}
+              >
+                {/* Thick rectangular brush stroke tilted 315 degrees */}
+                <motion.rect
+                  x="50"
+                  y="80"
+                  width="400"
+                  height="340"
+                  rx="25"
+                  ry="25"
+                  fill="hsl(14 50% 75%)"
+                  opacity="0.9"
+                  animate={{
+                    width: [400, 405, 400],
+                    height: [340, 345, 340],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+              </motion.svg>
+            </motion.div>
+
+            {/* Image Container */}
+            <motion.div 
+              className="aspect-[4/5] max-w-lg mx-auto lg:max-w-xl rounded-lg overflow-hidden relative z-10"
+              style={{ 
+                background: "transparent",
+                opacity: imageOpacity,
+                scale: imageScale,
+                y: imageY,
+              }}
             >
               <img
                 src="/Hero-img.png"
@@ -132,7 +205,7 @@ const HeroSection = () => {
                 className="w-full h-full object-cover"
                 loading="eager"
               />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

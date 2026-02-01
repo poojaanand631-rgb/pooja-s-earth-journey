@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Leaf } from "lucide-react";
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -11,28 +11,16 @@ const navItems = [
 ];
 
 const Navbar = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState("");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check visibility: show at Section 2 (About), hide before footer
-      const aboutSection = document.getElementById("about");
-      const footerSection = document.getElementById("contact");
-
-      if (aboutSection && footerSection) {
-        const aboutRect = aboutSection.getBoundingClientRect();
-        const footerRect = footerSection.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-
-        // Show nav when About section enters viewport, hide when Footer enters
-        if (aboutRect.top < windowHeight && footerRect.top > windowHeight) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false);
-        }
-      }
+      // Calculate scroll progress (0 to 1) for the first viewport height
+      const scrollPosition = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const progress = Math.min(scrollPosition / viewportHeight, 1);
+      setScrollProgress(progress);
 
       // Find active section
       const sections = navItems.map((item) => item.href.replace("#", ""));
@@ -58,233 +46,150 @@ const Navbar = () => {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-    setIsMobileMenuOpen(false);
   };
+
+  // Calculate opacity and blur based on scroll
+  const navOpacity = scrollProgress;
+  const navBlur = scrollProgress * 12; // 0 to 12px blur
+  const spacing = Math.max(0, 1 - scrollProgress); // spacing decreases as we scroll
 
   return (
     <>
-      {/* Desktop Left Vine Navigation */}
-      <AnimatePresence>
-        {isVisible && (
-          <motion.nav
-            initial={{ opacity: 0, x: -6 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -6 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="hidden lg:block fixed left-0 top-0 h-screen w-[88px] pointer-events-auto z-50"
-            style={{
-              background: "transparent",
-              backdropFilter: "blur(2px)",
-            }}
-          >
-            {/* Vine Wrapper */}
-            <div className="absolute inset-0 pointer-events-none">
-              {/* Vine Line 1 */}
-              <div
-                className="absolute top-0 bottom-0 w-0.5"
+      {/* Desktop Top Navigation */}
+      <motion.nav
+        className="hidden lg:block fixed top-0 left-0 right-0 z-50 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        <div
+          className="mx-auto px-6 md:px-12 lg:px-24 py-6 transition-all duration-700 ease-out"
+          style={{
+            paddingTop: `${24 + spacing * 24}px`, // More spacing initially
+          }}
+        >
+          <div className="relative pointer-events-auto">
+            {/* Glass morphism background - fades in on scroll */}
+            <motion.div
+              className="absolute inset-0 rounded-full transition-all duration-700 ease-out"
+              style={{
+                background: `rgba(250, 248, 245, ${navOpacity * 0.7})`,
+                backdropFilter: `blur(${navBlur}px)`,
+                border: `1px solid rgba(120, 140, 110, ${navOpacity * 0.15})`,
+                boxShadow: navOpacity > 0.5 ? `0 4px 24px -4px rgba(120, 140, 110, ${navOpacity * 0.12})` : 'none',
+              }}
+            />
+
+            {/* Navigation content */}
+            <div
+              className="relative flex items-center justify-between transition-all duration-700 ease-out"
+              style={{
+                gap: `${spacing * 120}px`, // Loose initially, compact on scroll
+                padding: `${12 + spacing * 8}px ${24 + spacing * 12}px`,
+              }}
+            >
+              {/* Logo - Left */}
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-300"
                 style={{
-                  left: "26px",
-                  backgroundColor: "rgba(120, 140, 110, 0.45)",
-                  borderRadius: "999px",
+                  opacity: 0.7 + navOpacity * 0.3,
                 }}
-              />
-              
-              {/* Vine Line 2 */}
+              >
+                <Leaf 
+                  className="transition-all duration-700 ease-out"
+                  style={{ 
+                    width: `${20 + spacing * 4}px`,
+                    height: `${20 + spacing * 4}px`,
+                  }} 
+                />
+                <span 
+                  className="font-heading font-normal tracking-wide transition-all duration-700 ease-out"
+                  style={{
+                    fontSize: `${18 + spacing * 6}px`,
+                    letterSpacing: `${spacing * 0.1}em`,
+                  }}
+                >
+                  PA
+                </span>
+              </button>
+
+              {/* Navigation Links - Right */}
               <div
-                className="absolute top-0 bottom-0 w-0.5"
+                className="flex items-center transition-all duration-700 ease-out"
                 style={{
-                  left: "34px",
-                  backgroundColor: "rgba(120, 140, 110, 0.45)",
-                  borderRadius: "999px",
+                  gap: `${32 + spacing * 24}px`, // Loose initially, compact on scroll
                 }}
-              />
-
-              {/* Optional Leaves & Flowers - between vines and text */}
-              <div className="absolute inset-0 pointer-events-none">
-                {/* Leaf between PA and About */}
-                <motion.svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  className="absolute"
-                  style={{ left: "20px", top: "80px" }}
-                  animate={{
-                    rotate: [0, 2, -2, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-                  }}
-                >
-                  <path
-                    d="M 6 0 Q 8 2 9 4 Q 8 6 6 7 Q 4 6 3 4 Q 4 2 6 0"
-                    fill="none"
-                    stroke="rgba(120, 140, 110, 0.6)"
-                    strokeWidth="1"
-                  />
-                </motion.svg>
-
-                {/* Flower between PA and About */}
-                <motion.svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  className="absolute"
-                  style={{ left: "30px", top: "80px" }}
-                  animate={{
-                    rotate: [0, 5, -5, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.3 },
-                  }}
-                >
-                  <circle cx="5" cy="5" r="3" fill="none" stroke="rgba(200, 180, 140, 0.5)" strokeWidth="1" />
-                  <path d="M 5 2 L 5 8 M 2 5 L 8 5" stroke="rgba(200, 180, 140, 0.5)" strokeWidth="1" />
-                  <circle cx="5" cy="5" r="1.5" fill="rgba(200, 180, 140, 0.4)" />
-                </motion.svg>
-
-                {/* Leaf between About and Case Studies */}
-                <motion.svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  className="absolute"
-                  style={{ left: "26px", top: "140px" }}
-                  animate={{
-                    rotate: [0, -2, 2, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 8.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
-                  }}
-                >
-                  <path
-                    d="M 6 0 Q 4 2 3 4 Q 4 6 6 7 Q 8 6 9 4 Q 8 2 6 0"
-                    fill="none"
-                    stroke="rgba(120, 140, 110, 0.6)"
-                    strokeWidth="1"
-                  />
-                </motion.svg>
-
-                {/* Leaf between Case Studies and On the Side */}
-                <motion.svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  className="absolute"
-                  style={{ left: "20px", top: "200px" }}
-                  animate={{
-                    rotate: [0, 2, -2, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1 },
-                  }}
-                >
-                  <path
-                    d="M 6 0 Q 8 2 9 4 Q 8 6 6 7 Q 4 6 3 4 Q 4 2 6 0"
-                    fill="none"
-                    stroke="rgba(120, 140, 110, 0.6)"
-                    strokeWidth="1"
-                  />
-                </motion.svg>
-
-                {/* Flower between On the Side and Blog */}
-                <motion.svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  className="absolute"
-                  style={{ left: "30px", top: "260px" }}
-                  animate={{
-                    rotate: [0, -5, 5, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 },
-                  }}
-                >
-                  <circle cx="5" cy="5" r="3" fill="none" stroke="rgba(200, 180, 140, 0.5)" strokeWidth="1" />
-                  <path d="M 5 2 L 5 8 M 2 5 L 8 5" stroke="rgba(200, 180, 140, 0.5)" strokeWidth="1" />
-                  <circle cx="5" cy="5" r="1.5" fill="rgba(200, 180, 140, 0.4)" />
-                </motion.svg>
-
-                {/* Leaf between Blog and Contact */}
-                <motion.svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  className="absolute"
-                  style={{ left: "26px", top: "320px" }}
-                  animate={{
-                    rotate: [0, -2, 2, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 9.5, repeat: Infinity, ease: "easeInOut", delay: 2 },
-                  }}
-                >
-                  <path
-                    d="M 6 0 Q 4 2 3 4 Q 4 6 6 7 Q 8 6 9 4 Q 8 2 6 0"
-                    fill="none"
-                    stroke="rgba(120, 140, 110, 0.6)"
-                    strokeWidth="1"
-                  />
-                </motion.svg>
+              >
+                {navItems.map((item, index) => {
+                  const isActive = activeSection === item.href.replace("#", "");
+                  return (
+                    <button
+                      key={item.href}
+                      onClick={() => scrollToSection(item.href)}
+                      className="relative font-medium transition-all duration-300 ease-out"
+                      style={{
+                        fontSize: `${14 + spacing * 2}px`,
+                        color: isActive 
+                          ? "hsl(100 15% 56%)" 
+                          : `rgba(62, 56, 48, ${0.6 + navOpacity * 0.2})`,
+                        letterSpacing: `${0.02 + spacing * 0.04}em`,
+                        opacity: 0.7 + navOpacity * 0.3,
+                      }}
+                    >
+                      {item.label}
+                      
+                      {/* Active indicator - subtle underline */}
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeSection"
+                          className="absolute -bottom-1 left-0 right-0 h-px bg-primary"
+                          transition={{ duration: 0.3, ease: "easeOut" }}
+                        />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
+          </div>
+        </div>
+      </motion.nav>
 
-            {/* Navigation Items - Text Only */}
-            <div className="absolute inset-0 flex flex-col justify-center" style={{ left: "46px" }}>
-              {navItems.map((item, index) => {
-                const isActive = activeSection === item.href.replace("#", "");
-                return (
-                  <button
-                    key={item.href}
-                    onClick={() => scrollToSection(item.href)}
-                    className="text-left mb-6 last:mb-0"
-                    style={{
-                      fontSize: "14px",
-                      lineHeight: "1",
-                      color: isActive ? "rgba(120, 140, 110, 0.8)" : "hsl(var(--foreground) / 0.7)",
-                      transition: "color 0.2s ease",
-                    }}
-                  >
-                    {item.label}
-                  </button>
-                );
-              })}
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
-
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-6 left-6 z-50 p-3 rounded-full bg-background/90 backdrop-blur-md border border-border text-foreground transition-transform duration-200 hover:scale-110"
-        aria-label="Toggle menu"
-      >
-        {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-      </button>
-
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Navigation - Simple overlay */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {scrollProgress > 0.3 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-lg lg:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="lg:hidden fixed top-0 left-0 right-0 z-50 pointer-events-auto"
           >
-            <div className="flex flex-col items-center justify-center h-full gap-6">
-              {navItems.map((item, index) => (
-                <motion.button
-                  key={item.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-2xl font-heading font-medium text-foreground hover:text-primary transition-colors duration-200"
+            <div className="mx-6 mt-6 p-4 rounded-full bg-background/80 backdrop-blur-md border border-sage/20 shadow-sm">
+              <div className="flex items-center justify-between">
+                {/* Mobile Logo */}
+                <button
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="flex items-center gap-2 text-foreground"
                 >
-                  {item.label}
-                </motion.button>
-              ))}
+                  <Leaf className="w-5 h-5" />
+                  <span className="font-heading text-lg">PA</span>
+                </button>
+
+                {/* Mobile Menu - Simplified */}
+                <div className="flex items-center gap-4 text-xs">
+                  {navItems.slice(0, 3).map((item) => (
+                    <button
+                      key={item.href}
+                      onClick={() => scrollToSection(item.href)}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {item.label.split(' ')[0]}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

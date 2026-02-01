@@ -57,14 +57,14 @@
     --warm-white: 48 33% 97%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(40 35% 90%) 0%, hsl(48 33% 97%) 50%, hsl(100 20% 90%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(40 35% 90%) 0%, hsl(48 33% 97%) 60%, hsl(100 20% 92%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(48 33% 97%) 0%, hsl(40 30% 94%) 100%);
     --gradient-sage: linear-gradient(135deg, hsl(100 15% 56%) 0%, hsl(85 20% 42%) 100%);
     --gradient-terracotta: linear-gradient(135deg, hsl(14 40% 59%) 0%, hsl(14 35% 50%) 100%);
     
     /* Section Background Gradients - Seamless Transitions */
-    --bg-about: linear-gradient(to bottom, hsl(48 33% 97%) 0%, hsl(100 18% 92%) 100%);
-    --bg-case-studies: linear-gradient(to bottom, hsl(100 18% 92%) 0%, hsl(100 12% 88%) 50%, hsl(85 15% 85%) 100%);
+    --bg-about: linear-gradient(to bottom, hsl(100 20% 92%) 0%, hsl(100 18% 90%) 100%);
+    --bg-case-studies: linear-gradient(to bottom, hsl(100 18% 90%) 0%, hsl(100 12% 88%) 50%, hsl(85 15% 85%) 100%);
     --bg-on-the-side: linear-gradient(to bottom, hsl(85 15% 85%) 0%, hsl(14 35% 90%) 100%);
     --bg-blog: linear-gradient(to bottom, hsl(14 35% 90%) 0%, hsl(48 33% 97%) 100%);
 
@@ -303,17 +303,12 @@
   /* Seamless section transitions */
   .section-seamless {
     position: relative;
-    transition: background 0.6s ease-out, padding-right 0.5s ease-out;
+    transition: background 1.2s ease-out;
   }
 
   /* Overlapping margins for seamless flow */
   .section-seamless + .section-seamless {
-    margin-top: -1px;
-  }
-
-  /* Smooth layout shift when nav appears */
-  .content-with-nav {
-    transition: padding-right 0.5s ease-out, margin-right 0.5s ease-out;
+    margin-top: 0;
   }
 }
 
