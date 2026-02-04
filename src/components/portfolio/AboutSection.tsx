@@ -1,12 +1,24 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Mail } from "lucide-react";
 import AboutImageSection from "./AboutImageSection";
 
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [hoveredText, setHoveredText] = useState<string | null>(null);
+  const [videoFile, setVideoFile] = useState<string | null>(null);
+
+  const handleTextHover = (videoFileName: string) => {
+    setHoveredText(videoFileName);
+    setVideoFile(videoFileName);
+  };
+
+  const handleTextLeave = () => {
+    setHoveredText(null);
+    setVideoFile(null);
+  };
 
   return (
     <>
@@ -18,17 +30,15 @@ const AboutSection = () => {
           marginTop: "-5vh"
         }}
       >
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Left - Text Content */}
-        <div className="max-w-2xl">
+      <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-10 text-left"
+          className="mb-10"
         >
           <span className="text-xs font-medium text-primary uppercase tracking-widest mb-4 block">Get to know me</span>
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-normal text-foreground leading-tight text-left">
+          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-normal text-foreground leading-tight">
             A little about me
           </h2>
         </motion.div>
@@ -38,25 +48,72 @@ const AboutSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          className="space-y-6"
+          className="space-y-6 relative"
         >
           <p className="text-lg md:text-xl text-foreground leading-relaxed font-light">
-            A menstrual cup was the start of my obsession with sustainability. What started as a desire to make a personal change, shaped my entire career. That small decision opened my eyes to the profound impact our everyday choices have on the planet—and ignited a passion I couldn't ignore.
+            Hi! I'm Pooja 👋
           </p>
 
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-            Over the past <strong className="text-foreground font-medium">4+ years</strong>, I've dedicated myself to 
-            social impact and climate action, with a particular focus on <strong className="text-foreground font-medium">waste management</strong>. 
-            My journey has taken me from grassroots NGOs to innovative social enterprises, each experience 
-            teaching me that meaningful change requires both ground-level action and systemic thinking.
+          <p className="text-lg md:text-xl text-foreground leading-relaxed font-light">
+            My sustainability journey started with a ✨{' '}
+            <span
+              className="underline decoration-sage/40 decoration-2 underline-offset-4 cursor-pointer transition-colors hover:decoration-sage/60"
+              onMouseEnter={() => handleTextHover("Menstrual cup.gif")}
+              onMouseLeave={handleTextLeave}
+            >
+              menstrual cup
+            </span>{' '}
+            ✨ Sounds a bit weird right? But it's true. After working on grassroots work, I shifted to social enterprises to make systemic change, focusing on{' '}
+            <span
+              className="underline decoration-sage/40 decoration-2 underline-offset-4 cursor-pointer transition-colors hover:decoration-sage/60"
+              onMouseEnter={() => handleTextHover("Circular Models.gif")}
+              onMouseLeave={handleTextLeave}
+            >
+              circular models
+            </span>{' '}
+            and helping businesses increase their impact. I'm currently doing my{' '}
+            <span
+              className="underline decoration-sage/40 decoration-2 underline-offset-4 cursor-pointer transition-colors hover:decoration-sage/60"
+              onMouseEnter={() => handleTextHover("Masters in Environmental management.gif")}
+              onMouseLeave={handleTextLeave}
+            >
+              masters in Environmental Management in NUS
+            </span>
+            , Singapore.
           </p>
 
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-            I've worked on initiatives that have helped divert plastic waste from landfills, championed 
-            circular economy solutions, and collaborated with diverse stakeholders to build sustainable 
-            practices. Now, pursuing my Master's at NUS, I'm ready to bring this blend of hands-on 
-            experience and strategic insight to new challenges.
+          <p className="text-lg md:text-xl text-foreground leading-relaxed font-light">
+            Throughout my journey, I have strived to always ask myself "how can I increase the impact I am creating?"{' '}
+            <span
+              className="underline decoration-sage/40 decoration-2 underline-offset-4 cursor-pointer transition-colors hover:decoration-sage/60"
+              onMouseEnter={() => handleTextHover("Let's answer that question together.gif")}
+              onMouseLeave={handleTextLeave}
+            >
+              Let's answer that question together
+            </span>
+            .
           </p>
+
+          {/* GIF Display */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: hoveredText ? 1 : 0.6, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mt-12 min-h-[200px] flex items-center justify-center"
+            onMouseLeave={handleTextLeave}
+          >
+            {hoveredText && videoFile ? (
+              <img
+                src={`/assets/${videoFile}`}
+                alt={hoveredText}
+                className="max-w-md md:max-w-lg lg:max-w-xl max-h-[60vh] w-auto h-auto object-contain"
+              />
+            ) : (
+              <div className="text-muted-foreground text-sm italic">
+                Hover on the underlined text!
+              </div>
+            )}
+          </motion.div>
 
           {/* CTA */}
           <motion.div
@@ -73,19 +130,6 @@ const AboutSection = () => {
               Let's Get in Touch
             </a>
           </motion.div>
-        </motion.div>
-        </div>
-
-        {/* Right - Placeholder Image */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="hidden lg:block"
-        >
-          <div className="aspect-[3/4] rounded-lg overflow-hidden bg-sage/10 border-2 border-dashed border-sage/30 flex items-center justify-center">
-            <span className="text-sage/50 text-sm font-medium">Image Placeholder</span>
-          </div>
         </motion.div>
       </div>
     </section>
