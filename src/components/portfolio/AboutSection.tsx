@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail } from "lucide-react";
 import AboutImageSection from "./AboutImageSection";
 
 const AboutSection = () => {
@@ -114,28 +113,12 @@ const AboutSection = () => {
               </div>
             )}
           </motion.div>
-
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
-            className="pt-6"
-          >
-            <a
-              href="mailto:pooja.anand@example.com"
-              className="btn-secondary inline-flex items-center gap-2"
-            >
-              <Mail className="w-4 h-4" />
-              Let's Get in Touch
-            </a>
-          </motion.div>
         </motion.div>
       </div>
+      
+      {/* Image Carousel Section */}
+      <AboutImageSection />
     </section>
-    
-    {/* Full-screen Image Section */}
-    <AboutImageSection />
     </>
   );
 };
